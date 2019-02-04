@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Neon & Electron</title>
+    <script>
+      const { ipcRenderer, remote } = require("electron");
+      const addon = remote.getGlobal("addon");
+
+      function doThing() {
+        ipcRenderer.sendSync("choose-file");
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Hello</h1>
+    <button onclick="doThing()">Choose</button>
+  </body>
+</html>
