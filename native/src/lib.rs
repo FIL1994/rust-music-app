@@ -27,12 +27,19 @@ lazy_static! {
         let device = rodio::default_output_device().unwrap();
         let sink = rodio::Sink::new(&device);
 
-        Mutex::new(Player {sink})
+        Mutex::new(Player { sink, device })
     };
 }
 
 struct Player {
-    sink: rodio::Sink
+    sink: rodio::Sink,
+    device: rodio::Device,
+}
+
+impl Player {
+    fn reset_sink(&mut self) {
+        self.sink = rodio::Sink::new(&self.device);
+    }
 }
 
 register_module!(mut cx, {
@@ -79,20 +86,21 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
     Ok(cx.string("ok"))
 }
 
-fn pause_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+fn pause_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     PLAYER.lock().unwrap().sink.pause();
 
     Ok(cx.undefined())
 }
 
-fn resume_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+fn resume_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     PLAYER.lock().unwrap().sink.play();
 
     Ok(cx.undefined())
 }
 
-fn stop_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+fn stop_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
     PLAYER.lock().unwrap().sink.stop();
+    PLAYER.lock().unwrap().reset_sink();
 
     Ok(cx.undefined())
 }
