@@ -10,7 +10,7 @@
     "filehound": "^1.17.0"
   },
   "scripts": {
-    "start": "electron .",
+    "start": "./scripts/start.sh",
     "build": "electron-build-env neon build",
     "build:release": "electron-build-env neon build --release",
     "clean": "neon clean",
