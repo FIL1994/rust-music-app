@@ -7,10 +7,12 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^4.0.4",
-    "filehound": "^1.17.0"
+    "filehound": "^1.17.0",
+    "music-metadata": "^3.5.1"
   },
   "scripts": {
     "start": "./scripts/start.sh",
+    "start:electron": "electron .",
     "build": "electron-build-env neon build",
     "build:release": "electron-build-env neon build --release",
     "clean": "neon clean",
