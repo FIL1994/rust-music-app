@@ -14,7 +14,7 @@ use neon::prelude::*;
 use std::fs::File;
 use std::io::BufReader;
 use neon::handle::Handle;
-use std::sync::Mutex;
+use std::sync::{Mutex, MutexGuard};
 
 // https://users.rust-lang.org/t/neon-electron-undefined-symbol-cxa-pure-virtual/21223
 #[no_mangle]
@@ -40,6 +40,10 @@ impl Player {
     fn reset_sink(&mut self) {
         self.sink = rodio::Sink::new(&self.device);
     }
+}
+
+fn get_player<'a>() -> MutexGuard<'a, Player> {
+    PLAYER.lock().unwrap()
 }
 
 register_module!(mut cx, {
@@ -99,8 +103,8 @@ fn resume_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
 }
 
 fn stop_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    PLAYER.lock().unwrap().sink.stop();
-    PLAYER.lock().unwrap().reset_sink();
+    get_player().sink.stop();
+    get_player().reset_sink();
 
     Ok(cx.undefined())
 }
