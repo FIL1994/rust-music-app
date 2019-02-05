@@ -3,6 +3,9 @@ const electron = require("electron");
 const { app, BrowserWindow, dialog, ipcMain } = electron;
 const mm = require("music-metadata");
 
+const c = require("./constants/index");
+const { CHOOSE_FILE, PAUSE_SONG, RESUME_SONG, STOP_SONG, SONG_DETAILS } = c;
+
 require("electron-reload")(__dirname);
 
 function createWindow() {
@@ -17,7 +20,6 @@ function createWindow() {
     }
   });
 
-  // win.loadFile("./index.html");
   win.loadFile("./src/dist/index.html");
 
   win.webContents.openDevTools();
@@ -30,10 +32,11 @@ function createWindow() {
 
 app.on("ready", createWindow);
 
-ipcMain.on("choose-file", async (event, arg) => {
+console.log(c);
+
+ipcMain.on(CHOOSE_FILE, async (event, arg) => {
   const files = chooseFile();
   if (!files) {
-    event.sender.send("cancelled-file-select");
     return;
   }
 
@@ -42,11 +45,15 @@ ipcMain.on("choose-file", async (event, arg) => {
 
   const metadata = await mm.parseFile(file);
 
-  event.sender.send("play-file", {
+  event.sender.send(SONG_DETAILS, {
     file,
     metadata
   });
 });
+
+ipcMain.on(PAUSE_SONG, event => addon.pauseSong());
+ipcMain.on(RESUME_SONG, event => addon.resumeSong());
+ipcMain.on(STOP_SONG, event => addon.stopSong());
 
 function chooseDirectory() {
   const path = dialog.showOpenDialog({

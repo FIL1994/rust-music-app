@@ -1,13 +1,16 @@
 import React from "react";
+import { ipcRenderer, remote } from "electron";
+
 import Metadata from "./Metadata";
-const { ipcRenderer, remote } = require("electron");
+import Controls from "./Controls";
+
 const addon = remote.getGlobal("addon");
 
 const App = props => (
   <div>
     React Template!
     <hr />
-    <button onClick={() => ipcRenderer.send("choose-file")}>Open File</button>
+    <Controls />
     <Metadata />
   </div>
 );

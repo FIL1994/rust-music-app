@@ -2,13 +2,15 @@ import React from "react";
 import { ipcRenderer } from "electron";
 import _ from "lodash";
 
+import { SONG_DETAILS } from "../../../constants";
+
 class Metadata extends React.Component {
   state = {
     metadata: {}
   };
 
   componentDidMount() {
-    ipcRenderer.on("play-file", (event, data) => {
+    ipcRenderer.on(SONG_DETAILS, (event, data) => {
       this.setState({
         metadata: data.metadata.common
       });
@@ -17,7 +19,7 @@ class Metadata extends React.Component {
 
   render() {
     const { metadata } = this.state;
-    console.log(this.state);
+
     return (
       <>
         <h3>Metadata</h3>
