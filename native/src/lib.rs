@@ -7,16 +7,33 @@ extern crate serde_derive;
 extern crate serde_bytes;
 extern crate serde_json;
 
+#[macro_use]
+extern crate lazy_static;
+
 use neon::prelude::*;
 use std::fs::File;
 use std::io::BufReader;
-use rodio::Source;
+use rodio::{Sink, Source};
 use neon::handle::Handle;
+use std::sync::Mutex;
 
 // https://users.rust-lang.org/t/neon-electron-undefined-symbol-cxa-pure-virtual/21223
 #[no_mangle]
 pub extern fn __cxa_pure_virtual() {
     loop {};
+}
+
+lazy_static! {
+    static ref PLAYER :Mutex<Player> = {
+        let device = rodio::default_output_device().unwrap();
+        let sink = Sink::new(&device);
+
+        Mutex::new(Player {sink})
+    };
+}
+
+struct Player {
+    sink: rodio::Sink
 }
 
 register_module!(mut cx, {
@@ -48,11 +65,13 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
 
     // println!("path from rust: {}", file_path);
 
-    let device = rodio::default_output_device().unwrap();
-
     let file = File::open(file_path).unwrap();
     let source = rodio::Decoder::new(BufReader::new(file)).unwrap();
-    rodio::play_raw(&device, source.convert_samples());
+
+    PLAYER.lock().unwrap().sink.append(source);
+
+    // sink.detach();
+    // sink.sleep_until_end();
 
     Ok(cx.string("ok"))
 }
