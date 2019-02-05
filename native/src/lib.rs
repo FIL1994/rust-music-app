@@ -13,7 +13,6 @@ extern crate lazy_static;
 use neon::prelude::*;
 use std::fs::File;
 use std::io::BufReader;
-use rodio::{Sink, Source};
 use neon::handle::Handle;
 use std::sync::Mutex;
 
@@ -26,7 +25,7 @@ pub extern fn __cxa_pure_virtual() {
 lazy_static! {
     static ref PLAYER :Mutex<Player> = {
         let device = rodio::default_output_device().unwrap();
-        let sink = Sink::new(&device);
+        let sink = rodio::Sink::new(&device);
 
         Mutex::new(Player {sink})
     };
@@ -38,8 +37,12 @@ struct Player {
 
 register_module!(mut cx, {
     cx.export_function("hello", hello)?;
-    cx.export_function("playSong", play_song)?;
     cx.export_function("parse", parse)?;
+
+    cx.export_function("playSong", play_song)?;
+    cx.export_function("pauseSong", pause_song)?;
+    cx.export_function("resumeSong", resume_song)?;
+    cx.export_function("stopSong", stop_song)?;
 
     Ok(())
 });
@@ -74,4 +77,22 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
     // sink.sleep_until_end();
 
     Ok(cx.string("ok"))
+}
+
+fn pause_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+    PLAYER.lock().unwrap().sink.pause();
+
+    Ok(cx.undefined())
+}
+
+fn resume_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+    PLAYER.lock().unwrap().sink.play();
+
+    Ok(cx.undefined())
+}
+
+fn stop_song(mut cx:FunctionContext) -> JsResult<JsUndefined> {
+    PLAYER.lock().unwrap().sink.stop();
+
+    Ok(cx.undefined())
 }
