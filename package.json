@@ -6,10 +6,10 @@
   "author": "Philip Van Raalte <phil.vanraalte@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "electron": "^4.0.4",
     "electron-context-menu": "^0.11.0",
     "filehound": "^1.17.0",
-    "music-metadata": "^3.5.1"
+    "music-metadata": "^3.5.1",
+    "sqlite3": "^4.0.6"
   },
   "scripts": {
     "start": "./scripts/start.sh",
@@ -17,11 +17,12 @@
     "build": "electron-build-env neon build",
     "build:release": "electron-build-env neon build --release",
     "clean": "neon clean",
-    "rebuild": "electron-rebuild -f"
+    "rebuild": "electron-rebuild -f -p -t \"dev,prod,optional\""
   },
   "devDependencies": {
+    "electron": "^4.0.4",
     "electron-build-env": "^0.2.0",
-    "electron-rebuild": "^1.8.2",
+    "electron-rebuild": "^1.8.3",
     "electron-reload": "^1.4.0",
     "neon-cli": "^0.2.0"
   }

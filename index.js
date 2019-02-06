@@ -3,6 +3,8 @@ const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
 const mm = require("music-metadata");
 
+console.log("V", Number(process.version.match(/^v(\d+\.\d+)/)[1]));
+
 const {
   CHOOSE_FILE,
   PAUSE_SONG,
