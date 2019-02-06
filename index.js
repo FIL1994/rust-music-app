@@ -10,7 +10,7 @@ let db = new sqlite3.Database("./mydb.db", err => {
 });
 
 db.run("CREATE TABLE IF NOT EXISTS langs(name text)");
-db.run("INSERT INTO langs(name) VALUES(?)", ["test"]);
+// db.run("INSERT INTO langs(name) VALUES(?)", ["test"]);
 db.all("SELECT * FROM langs", [], (err, rows) => {
   console.log("db", rows);
 });
