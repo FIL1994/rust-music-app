@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^4.0.4",
+    "electron-context-menu": "^0.11.0",
     "filehound": "^1.17.0",
     "music-metadata": "^3.5.1"
   },

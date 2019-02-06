@@ -1,12 +1,14 @@
 const addon = require("./native");
-const electron = require("electron");
-const { app, BrowserWindow, dialog, ipcMain } = electron;
+const { app, BrowserWindow, dialog, ipcMain } = require("electron");
+const contextMenu = require("electron-context-menu");
 const mm = require("music-metadata");
 
 const c = require("./constants/index");
 const { CHOOSE_FILE, PAUSE_SONG, RESUME_SONG, STOP_SONG, SONG_DETAILS } = c;
 
 require("electron-reload")(__dirname);
+
+contextMenu();
 
 function createWindow() {
   let win = new BrowserWindow({
