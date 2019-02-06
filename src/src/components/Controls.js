@@ -12,7 +12,7 @@ import {
 const Controls = props => {
   return (
     <>
-      <button onClick={() => ipcRenderer.send(CHOOSE_FILE)}>Play File</button>
+      <button onClick={() => ipcRenderer.send(CHOOSE_FILE)}>Add Song</button>
       <button onClick={() => ipcRenderer.send(PAUSE_SONG)}>Pause</button>
       <button onClick={() => ipcRenderer.send(RESUME_SONG)}>Resume</button>
       <button onClick={() => ipcRenderer.send(STOP_SONG)}>Stop</button>

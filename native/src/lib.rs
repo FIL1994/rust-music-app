@@ -84,9 +84,6 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
 
     get_player().sink.append(source);
 
-    // sink.detach();
-    // sink.sleep_until_end();
-
     Ok(cx.string("ok"))
 }
 

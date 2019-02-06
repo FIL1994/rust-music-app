@@ -1,2 +1,7 @@
 /dist
 /node_modules
+
+semantic/*
+!semantic/dist
+semantic/dist/*
+!semantic/dist/semantic.min.css
