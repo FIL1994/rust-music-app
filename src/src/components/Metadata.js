@@ -10,11 +10,11 @@ class Metadata extends React.Component {
   };
 
   componentDidMount() {
-    ipcRenderer.on(SONG_DETAILS, (event, data) => {
-      this.setState({
-        metadata: data.metadata.common
-      });
-    });
+    // ipcRenderer.on(SONG_DETAILS, (event, data) => {
+    //   this.setState({
+    //     metadata: data.metadata.common
+    //   });
+    // });
   }
 
   render() {

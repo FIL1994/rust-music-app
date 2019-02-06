@@ -41,7 +41,7 @@ ipcMain.on(CHOOSE_FILE, async (event, arg) => {
   }
 
   const file = files[0];
-  addon.playSong(file);
+  // addon.playSong(file);
 
   const metadata = await mm.parseFile(file);
 

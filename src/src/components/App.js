@@ -6,13 +6,15 @@ import Controls from "./Controls";
 
 const addon = remote.getGlobal("addon");
 
-const App = props => (
-  <div>
-    React Template!
-    <hr />
-    <Controls />
-    <Metadata />
-  </div>
-);
+const App = props => {
+  return (
+    <div>
+      React Template!
+      <hr />
+      <Controls />
+      <Metadata />
+    </div>
+  );
+};
 
 export default App;
