@@ -82,7 +82,7 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
     let file = File::open(file_path).unwrap();
     let source = rodio::Decoder::new(BufReader::new(file)).unwrap();
 
-    PLAYER.lock().unwrap().sink.append(source);
+    get_player().sink.append(source);
 
     // sink.detach();
     // sink.sleep_until_end();
@@ -91,13 +91,13 @@ fn play_song(mut cx: FunctionContext) -> JsResult<JsString> {
 }
 
 fn pause_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    PLAYER.lock().unwrap().sink.pause();
+    get_player().sink.pause();
 
     Ok(cx.undefined())
 }
 
 fn resume_song(mut cx: FunctionContext) -> JsResult<JsUndefined> {
-    PLAYER.lock().unwrap().sink.play();
+    get_player().sink.play();
 
     Ok(cx.undefined())
 }
