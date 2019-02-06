@@ -32,8 +32,6 @@ function createWindow() {
 
 app.on("ready", createWindow);
 
-console.log(c);
-
 ipcMain.on(CHOOSE_FILE, async (event, arg) => {
   const files = chooseFile();
   if (!files) {
