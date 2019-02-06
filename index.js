@@ -3,8 +3,14 @@ const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
 const mm = require("music-metadata");
 
-const c = require("./constants/index");
-const { CHOOSE_FILE, PAUSE_SONG, RESUME_SONG, STOP_SONG, SONG_DETAILS } = c;
+const {
+  CHOOSE_FILE,
+  PAUSE_SONG,
+  RESUME_SONG,
+  STOP_SONG,
+  SONG_DETAILS,
+  PLAY_SONG
+} = require("./constants/index");
 
 require("electron-reload")(__dirname);
 
@@ -40,13 +46,13 @@ ipcMain.on(CHOOSE_FILE, async (event, arg) => {
     return;
   }
 
-  const file = files[0];
+  const path = files[0];
   // addon.playSong(file);
 
-  const metadata = await mm.parseFile(file);
+  const metadata = await mm.parseFile(path);
 
   event.sender.send(SONG_DETAILS, {
-    file,
+    path,
     metadata
   });
 });
@@ -54,6 +60,7 @@ ipcMain.on(CHOOSE_FILE, async (event, arg) => {
 ipcMain.on(PAUSE_SONG, event => addon.pauseSong());
 ipcMain.on(RESUME_SONG, event => addon.resumeSong());
 ipcMain.on(STOP_SONG, event => addon.stopSong());
+ipcMain.on(PLAY_SONG, (event, data) => addon.playSong(data));
 
 function chooseDirectory() {
   const path = dialog.showOpenDialog({

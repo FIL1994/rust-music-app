@@ -1,41 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { ipcRenderer } from "electron";
+import { Button, Divider } from "semantic-ui-react";
 
 import {
-  CHOOSE_FILE,
   PAUSE_SONG,
   RESUME_SONG,
   STOP_SONG,
-  SONG_DETAILS
+  PLAY_SONG
 } from "../../../constants";
 
 const Controls = props => {
-  const [songs, setSongs] = useState([]);
-
-  useEffect(() => {
-    const onAddSong = (event, data) => {
-      let newSongs = [...songs];
-      newSongs.push(data.metadata.common);
-      setSongs(newSongs);
-    };
-
-    ipcRenderer.on(SONG_DETAILS, onAddSong);
-
-    return () => {
-      ipcRenderer.removeListener(SONG_DETAILS, onAddSong);
-    };
-  });
-
-  console.log("songs", songs);
-
   return (
     <>
-      <button onClick={() => ipcRenderer.send(CHOOSE_FILE)}>Add Song</button>
-      <button onClick={() => ipcRenderer.send(PAUSE_SONG)}>Pause</button>
-      <button onClick={() => ipcRenderer.send(RESUME_SONG)}>Resume</button>
-      <button onClick={() => ipcRenderer.send(STOP_SONG)}>Stop</button>
+      <Divider />
+      <Button
+        onClick={() => ipcRenderer.send(PLAY_SONG, props.currentSong.path)}
+      >
+        Play
+      </Button>
+      <Button onClick={() => ipcRenderer.send(PAUSE_SONG)}>Pause</Button>
+      <Button onClick={() => ipcRenderer.send(RESUME_SONG)}>Resume</Button>
+      <Button onClick={() => ipcRenderer.send(STOP_SONG)}>Stop</Button>
     </>
   );
+};
+
+Controls.propTypes = {
+  currentSong: PropTypes.object.isRequired
 };
 
 export default Controls;

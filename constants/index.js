@@ -3,5 +3,6 @@ module.exports = {
   PAUSE_SONG: "pause-song",
   RESUME_SONG: "resume-song",
   STOP_SONG: "stop-song",
-  SONG_DETAILS: "song-details"
+  SONG_DETAILS: "song-details",
+  PLAY_SONG: "play-song"
 };
