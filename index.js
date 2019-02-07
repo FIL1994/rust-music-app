@@ -22,6 +22,7 @@ db.close(err => {
   console.log("Closed the database connection.");
 });
 
+const isDev = require("electron-is-dev");
 const addon = require("./native");
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
@@ -36,15 +37,17 @@ const {
   PLAY_SONG
 } = require("./constants/index");
 
-require("electron-reload")(__dirname);
+if (isDev) {
+  require("electron-reload")(__dirname);
+}
 
 contextMenu();
 
 function createWindow() {
   let win = new BrowserWindow({
     title: "Electron & Neon",
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       devTools: true,
