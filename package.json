@@ -1,28 +1,36 @@
 {
   "name": "neon-app",
   "version": "0.1.0",
-  "description": "",
-  "main": "lib/index.js",
+  "description": "A music app that uses Rust, Neon and Electron",
+  "main": "index.js",
   "author": "Philip Van Raalte <phil.vanraalte@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "electron": "^4.0.4",
     "electron-context-menu": "^0.11.0",
+    "electron-is-dev": "^1.0.1",
     "filehound": "^1.17.0",
-    "music-metadata": "^3.5.1"
+    "music-metadata": "^3.5.1",
+    "sqlite3": "^4.0.6"
   },
   "scripts": {
     "start": "./scripts/start.sh",
     "start:electron": "electron .",
     "build": "electron-build-env neon build",
     "build:release": "electron-build-env neon build --release",
+    "build:package": "electron-packager . --out=out --overwrite",
+    "build:snap": "DEBUG=electron-installer-snap:snapcraft electron-installer-snap --src=out/neon-app-linux-x64 --dest=out/app",
     "clean": "neon clean",
-    "rebuild": "electron-rebuild -f"
+    "rebuild": "electron-rebuild -f -p -t \"dev,prod,optional\""
   },
   "devDependencies": {
+    "electron": "^4.0.4",
     "electron-build-env": "^0.2.0",
-    "electron-rebuild": "^1.8.2",
+    "electron-installer-snap": "^3.1.0",
+    "electron-rebuild": "^1.8.3",
     "electron-reload": "^1.4.0",
     "neon-cli": "^0.2.0"
+  },
+  "build": {
+    "appId": "com.example.rust-music-player"
   }
 }

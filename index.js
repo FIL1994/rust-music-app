@@ -1,3 +1,28 @@
+const sqlite3 = require("sqlite3").verbose();
+
+// will create db if it doesn't exist
+let db = new sqlite3.Database("./mydb.db", err => {
+  if (err) {
+    console.log("error", err.message);
+  } else {
+    console.log("Connected to db");
+  }
+});
+
+db.run("CREATE TABLE IF NOT EXISTS langs(name text)");
+// db.run("INSERT INTO langs(name) VALUES(?)", ["test"]);
+db.all("SELECT * FROM langs", [], (err, rows) => {
+  console.log("db", rows);
+});
+
+db.close(err => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log("Closed the database connection.");
+});
+
+const isDev = require("electron-is-dev");
 const addon = require("./native");
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
@@ -12,15 +37,17 @@ const {
   PLAY_SONG
 } = require("./constants/index");
 
-require("electron-reload")(__dirname);
+if (isDev) {
+  require("electron-reload")(__dirname);
+}
 
 contextMenu();
 
 function createWindow() {
   let win = new BrowserWindow({
     title: "Electron & Neon",
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       devTools: true,
