@@ -15,10 +15,7 @@ const App = props => {
   useEffect(() => {
     const onAddSong = (event, data) => {
       let newSongs = [...songs];
-      newSongs.push({
-        ...data.metadata.common,
-        path: data.path
-      });
+      newSongs.push(data);
       setSongs(newSongs);
     };
 
