@@ -1,4 +1,4 @@
-const { db } = require("./electron/db");
+const { db, insertSong } = require("./electron/db");
 const isDev = require("electron-is-dev");
 const addon = require("./native");
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
@@ -55,10 +55,18 @@ ipcMain.on(CHOOSE_FILE, async (event, arg) => {
 
   const metadata = await mm.parseFile(path);
 
-  event.sender.send(SONG_DETAILS, {
-    path,
-    metadata
-  });
+  const song = {
+    ...metadata.common,
+    path
+  };
+
+  try {
+    insertSong(song);
+  } catch (e) {
+    console.log("error", e);
+  }
+
+  event.sender.send(SONG_DETAILS, song);
 });
 
 ipcMain.on(PAUSE_SONG, event => addon.pauseSong());
