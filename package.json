@@ -23,10 +23,10 @@
     "rebuild": "electron-rebuild -f -p -t \"dev,prod,optional\""
   },
   "devDependencies": {
-    "electron": "^4.0.4",
+    "electron": "^4.0.5",
     "electron-build-env": "^0.2.0",
     "electron-installer-snap": "^3.1.0",
-    "electron-rebuild": "^1.8.3",
+    "electron-rebuild": "^1.8.4",
     "electron-reload": "^1.4.0",
     "neon-cli": "^0.2.0"
   },
