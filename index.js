@@ -1,4 +1,4 @@
-const { db, insertSong } = require("./electron/db");
+const { db, insertSong, getSongs } = require("./electron/db");
 const isDev = require("electron-is-dev");
 const addon = require("./native");
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
@@ -11,7 +11,9 @@ const {
   RESUME_SONG,
   STOP_SONG,
   SONG_DETAILS,
-  PLAY_SONG
+  PLAY_SONG,
+  GET_ALL_SONGS,
+  RECEIVE_ALL_SONGS
 } = require("./constants/index");
 
 if (isDev) {
@@ -60,11 +62,7 @@ ipcMain.on(CHOOSE_FILE, async (event, arg) => {
     path
   };
 
-  try {
-    insertSong(song);
-  } catch (e) {
-    console.log("error", e);
-  }
+  insertSong(song);
 
   event.sender.send(SONG_DETAILS, song);
 });
@@ -73,6 +71,10 @@ ipcMain.on(PAUSE_SONG, event => addon.pauseSong());
 ipcMain.on(RESUME_SONG, event => addon.resumeSong());
 ipcMain.on(STOP_SONG, event => addon.stopSong());
 ipcMain.on(PLAY_SONG, (event, data) => addon.playSong(data));
+ipcMain.on(GET_ALL_SONGS, async event => {
+  const songs = await getSongs();
+  event.sender.send(RECEIVE_ALL_SONGS, songs);
+});
 
 function chooseDirectory() {
   const path = dialog.showOpenDialog({
